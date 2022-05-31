@@ -7,6 +7,7 @@ const validateRequest = (context: ExecutionContext) => {
   // if (!user) {
   //   return false;
   // }
+  // TODO implement your own logic here
   return true;
 };
 
