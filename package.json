@@ -1,8 +1,12 @@
 {
   "name": "store-server",
   "version": "0.0.1",
-  "description": "",
-  "author": "",
+  "description": "Fake Clothing APIs",
+  "author": {
+    "name": "Cris ta",
+    "email": "canh.tc98@gmail.com",
+    "url": "https://github.com/cris-ta"
+  },
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
