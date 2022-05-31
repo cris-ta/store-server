@@ -3,10 +3,10 @@ import { Observable } from 'rxjs';
 
 const validateRequest = (context: ExecutionContext) => {
   const request = context.switchToHttp().getRequest();
-  const user = request.user;
-  if (!user) {
-    return false;
-  }
+  // const user = request.user;
+  // if (!user) {
+  //   return false;
+  // }
   return true;
 };
 
