@@ -1,3 +1,5 @@
+import { Roles } from './roles.interface';
+
 export interface Users {
   id: number;
   email: string;
@@ -18,4 +20,7 @@ export interface Users {
     };
   };
   phone: string;
+
+  // Relations
+  roles: Roles[];
 }
