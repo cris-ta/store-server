@@ -18,12 +18,12 @@ import { RolesModule } from './resources/roles/roles.module';
       useFactory: async (configService: ConfigService) => ({
         type: 'postgres',
         url: configService.get('DATABASE_URL'),
-        // ssl: true,
-        // extra: {
-        //   ssl: {
-        //     rejectUnauthorized: false,
-        //   },
-        // },
+        ssl: true,
+        extra: {
+          ssl: {
+            rejectUnauthorized: false,
+          },
+        },
         autoLoadEntities: true,
         synchronize: true,
       }),
