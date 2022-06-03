@@ -4,7 +4,7 @@ import { UsersModule } from './resources/users/users.module';
 import { CartsModule } from './resources/carts/carts.module';
 import { AuthGuard } from './guards/auth.guard';
 import { APP_GUARD } from '@nestjs/core';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule, TypeOrmModuleOptions } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PermissionsModule } from './resources/permissions/permissions.module';
 import { RolesModule } from './resources/roles/roles.module';
@@ -15,18 +15,29 @@ import { RolesModule } from './resources/roles/roles.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) => ({
-        type: 'postgres',
-        url: configService.get('DATABASE_URL'),
-        ssl: true,
-        extra: {
-          ssl: {
-            rejectUnauthorized: false,
-          },
-        },
-        autoLoadEntities: true,
-        synchronize: true,
-      }),
+      useFactory: async (configService: ConfigService) => {
+        const enabledSSL = configService.get('DATABASE_SSL') === 'true';
+
+        const defaultOptions: TypeOrmModuleOptions = {
+          type: 'postgres',
+          url: configService.get('DATABASE_URL'),
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+
+        if (enabledSSL) {
+          return {
+            ...defaultOptions,
+            ssl: true,
+            extra: {
+              ssl: {
+                rejectUnauthorized: false,
+              },
+            },
+          } as TypeOrmModuleOptions;
+        }
+        return defaultOptions;
+      },
     }),
     ProductsModule,
     UsersModule,
