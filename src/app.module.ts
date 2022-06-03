@@ -16,24 +16,17 @@ import { RolesModule } from './resources/roles/roles.module';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        const enabledSSL = configService.get('DATABASE_SSL') === 'true';
-
         const defaultOptions: TypeOrmModuleOptions = {
           type: 'postgres',
           url: configService.get('DATABASE_URL'),
           autoLoadEntities: true,
           synchronize: true,
         };
-
-        if (enabledSSL) {
+        if (configService.get('DATABASE_SSL') === 'true') {
           return {
             ...defaultOptions,
             ssl: true,
-            extra: {
-              ssl: {
-                rejectUnauthorized: false,
-              },
-            },
+            extra: { ssl: { rejectUnauthorized: false } },
           } as TypeOrmModuleOptions;
         }
         return defaultOptions;

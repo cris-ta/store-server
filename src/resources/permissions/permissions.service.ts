@@ -8,7 +8,10 @@ export class PermissionsService {
   constructor(private dataSource: DataSource) {}
 
   create(createPermissionDto: CreatePermissionDto): Promise<Permission> {
-    return this.dataSource.manager.save(Permission, createPermissionDto);
+    return this.dataSource.manager.save(Permission, {
+      ...createPermissionDto,
+      createdAt: new Date(),
+    });
   }
 
   createMany(
@@ -18,7 +21,10 @@ export class PermissionsService {
       async (transactionalEntityManager) => {
         const permissions = transactionalEntityManager.create(
           Permission,
-          createPermissionDto,
+          createPermissionDto.map((permission) => ({
+            ...permission,
+            createdAt: new Date(),
+          })),
         );
         return transactionalEntityManager.save(Permission, permissions);
       },
